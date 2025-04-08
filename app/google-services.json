@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "361967747197",
+    "project_id": "proyecto-c1815",
+    "storage_bucket": "proyecto-c1815.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:361967747197:android:c1e8decb8a2445bbc57114",
+        "android_client_info": {
+          "package_name": "mx.edu.itesca.proyecto"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnOMPkutwz9scslOo06suWE3nktr4miro"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
