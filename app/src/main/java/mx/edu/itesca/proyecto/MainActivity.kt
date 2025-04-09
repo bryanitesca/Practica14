@@ -5,7 +5,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.ViewModelProvider
 import mx.edu.itesca.proyecto.databinding.ActivityMainBinding
+import com.google.firebase.FirebaseApp
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -16,23 +18,31 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
+        FirebaseApp.initializeApp(this)
+        enableEdgeToEdge()
+        setContentView(R.layout.activity_main)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         viewModel = ViewModelProvider(this)[TareaViewModel::class.java]
 
-        viewModel.listaTareas.observe(this){ tareas ->
+        viewModel.listaTareas.observe(this) { tareas ->
             setupRecyclerView(tareas)
         }
 
-        binding.btnAgregarTarea.setOnClickListener{
+        binding.btnAgregarTarea.setOnClickListener {
             val tarea = Tarea(
                 titulo = binding.etTitulo.text.toString(),
                 descripcion = binding.etDescripcion.text.toString()
             )
+
             viewModel.agregarTareas(tarea)
+
             binding.etTitulo.setText("")
             binding.etDescripcion.setText("")
         }
@@ -47,30 +57,21 @@ class MainActivity : AppCompatActivity() {
             viewModel.actualizarTareas(tareaEdit)
         }
 
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-
-        }
     }
 
-    fun setupRecyclerView(listaTareas: List<Tarea>){
+    fun setupRecyclerView(listaTareas: List<Tarea>) {
         adapter = TareaAdapter(listaTareas, ::borrarTarea, ::actualizarTarea)
         binding.rvTareas.adapter = adapter
     }
 
-    fun borrarTarea(id: String){
+    fun borrarTarea(id: String) {
         viewModel.borrarTareas(id)
     }
 
-    fun actualizarTarea(tarea: Tarea){
+    fun actualizarTarea(tarea: Tarea) {
         tareaEdit = tarea
 
         binding.etTitulo.setText(tareaEdit.titulo)
         binding.etDescripcion.setText(tareaEdit.descripcion)
     }
-
 }

@@ -1,20 +1,23 @@
 package mx.edu.itesca.proyecto
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 
-class TareaAdapter (
+class TareaAdapter(
     var listaTareas: List<Tarea>,
     var onBorrarClic: (String) -> Unit,
     var onActualizarClic: (Tarea) -> Unit
-): RecyclerView.Adapter<TareaAdapter.ViewHolder>(){
-    class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+) : RecyclerView.Adapter<TareaAdapter.ViewHolder>() {
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val cvTarea: CardView = itemView.findViewById(R.id.cvTarea)
-        val tvTitulo: CardView = itemView.findViewById(R.id.tvTitulo)
-        val tvDescripcion: CardView = itemView.findViewById(R.id.tvDescripcion)
-        val ibtnBorrar: CardView = itemView.findViewById(R.id.ibtnButton)
+        val tvTitulo: TextView = itemView.findViewById(R.id.tvTitulo)
+        val tvDescripcion: TextView = itemView.findViewById(R.id.tvDescripcion)
+        val ibtnBorrar: ImageButton = itemView.findViewById(R.id.ibtnButton)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -28,17 +31,16 @@ class TareaAdapter (
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val tarea = listaTareas[position]
-        holder.tvTitulo.text = tarea.titulo;
+
+        holder.tvTitulo.text = tarea.titulo
         holder.tvDescripcion.text = tarea.descripcion
 
         holder.ibtnBorrar.setOnClickListener {
             onBorrarClic(tarea.id)
         }
+
         holder.cvTarea.setOnClickListener {
             onActualizarClic(tarea)
         }
     }
-
-
-
 }
